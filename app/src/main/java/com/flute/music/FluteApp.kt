@@ -1,6 +1,7 @@
 package com.flute.music
 
 import android.app.Application
+import android.util.Log
 import com.flute.music.di.AppContainer
 
 class FluteApp : Application() {
@@ -11,13 +12,30 @@ class FluteApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        appContainer = AppContainer(this)
+
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            Log.e("FluteFatal", "Crash on ${thread.name}: ${throwable.message}", throwable)
+            try {
+                val prefs = getSharedPreferences("flute_crash_log", MODE_PRIVATE)
+                prefs.edit().putString("last_crash", Log.getStackTraceString(throwable)).commit()
+            } catch (e: Exception) {
+                // ignore
+            }
+            throwable.printStackTrace()
+        }
+
+        try {
+            appContainer = AppContainer(this)
+        } catch (e: Throwable) {
+            Log.e("FluteApp", "Failed to create AppContainer", e)
+        }
     }
 
     companion object {
-        private lateinit var instance: FluteApp
+        var instance: FluteApp? = null
+            private set
 
         val container: AppContainer
-            get() = instance.appContainer
+            get() = instance?.appContainer ?: throw IllegalStateException("FluteApp not initialized")
     }
 }

@@ -15,8 +15,8 @@
     <application
         android:name=".FluteApp"
         android:allowBackup="true"
-        android:icon="@drawable/flute_logo"
-        android:roundIcon="@drawable/flute_logo"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Flute"
@@ -35,7 +35,7 @@
         <!-- Media Playback Service -->
         <service
             android:name=".player.PlaybackService"
-            android:exported="true"
+            android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
                 <action android:name="androidx.media3.session.MediaSessionService" />
