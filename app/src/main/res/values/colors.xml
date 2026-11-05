@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="flute_purple">#7C4DFF</color>
+    <color name="flute_purple_dark">#6200EA</color>
+    <color name="flute_purple_light">#B388FF</color>
+    <color name="background_dark">#0A0A0A</color>
+    <color name="surface_dark">#1A1A1A</color>
+    <color name="card_dark">#252525</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="heart_red">#FF4081</color>
+    <color name="splash_background">#0A0A0A</color>
+</resources>
