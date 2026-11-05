@@ -148,10 +148,15 @@ fun HomeScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp),
+                        .height(200.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = FlutePurple)
+                    Text(
+                        text = "Loading music...",
+                        color = FlutePurple,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
         }

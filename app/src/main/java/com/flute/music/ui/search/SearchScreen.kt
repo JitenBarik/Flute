@@ -141,7 +141,12 @@ fun SearchScreen(
                     .padding(bottom = 80.dp),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = FlutePurple)
+                Text(
+                    text = "Searching music...",
+                    color = FlutePurple,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
+                )
             }
         } else {
             LazyColumn(
