@@ -64,7 +64,7 @@ fun MiniPlayer(
     ) {
         // Thin progress bar at top
         LinearProgressIndicator(
-            progress = { progress },
+            progress = progress,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp),

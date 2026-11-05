@@ -45,7 +45,9 @@ import com.flute.music.ui.theme.FlutePurple
 import com.flute.music.ui.theme.SurfaceDark
 import com.flute.music.ui.theme.TextPrimary
 import com.flute.music.ui.theme.TextSecondary
+import androidx.compose.material3.ExperimentalMaterial3Api
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     searchViewModel: SearchViewModel,

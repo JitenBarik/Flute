@@ -248,7 +248,7 @@ class MusicPlayerManager(context: Context) {
             .setArtist(song.artist)
             .setAlbumTitle(song.album)
             .apply {
-                if (song.albumArtUri.isNotEmpty()) {
+                if (!song.albumArtUri.isNullOrEmpty()) {
                     setArtworkUri(Uri.parse(song.albumArtUri))
                 }
             }
