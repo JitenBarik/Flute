@@ -152,8 +152,12 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        if (permissions.isNotEmpty()) {
-            permissionLauncher.launch(permissions.toTypedArray())
+        try {
+            if (permissions.isNotEmpty()) {
+                permissionLauncher.launch(permissions.toTypedArray())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }
