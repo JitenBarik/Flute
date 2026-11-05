@@ -31,7 +31,7 @@ class LocalMusicRepository(private val context: Context) {
             MediaStore.Audio.Media.DATE_ADDED
         )
 
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND ${MediaStore.Audio.Media.DURATION} > 5000"
+        val selection = "${MediaStore.Audio.Media.DURATION} > 1000"
         val sortOrder = "${MediaStore.Audio.Media.TITLE} ASC"
 
         try {
@@ -212,7 +212,7 @@ class LocalMusicRepository(private val context: Context) {
             MediaStore.Audio.Media.DATE_ADDED
         )
 
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND ${MediaStore.Audio.Media.ALBUM_ID} = ?"
+        val selection = "${MediaStore.Audio.Media.ALBUM_ID} = ?"
         val selectionArgs = arrayOf(albumId.toString())
         val sortOrder = "${MediaStore.Audio.Media.TRACK} ASC"
 

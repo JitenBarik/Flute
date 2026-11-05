@@ -1,21 +1,20 @@
 package com.flute.music.data.repository
 
-import com.flute.music.data.api.JamendoApi
+import com.flute.music.data.api.MusicApi
+import com.flute.music.data.api.MusicTrack
 import com.flute.music.data.model.Song
-import com.flute.music.data.model.toSong
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OnlineMusicRepository(private val jamendoApi: JamendoApi) {
+class OnlineMusicRepository(private val musicApi: MusicApi) {
 
     suspend fun searchTracks(query: String): Result<List<Song>> = withContext(Dispatchers.IO) {
         try {
-            val response = jamendoApi.searchTracks(search = query)
-            if (response.headers.code == 0) {
-                Result.success(response.results.map { it.toSong() })
-            } else {
-                Result.failure(Exception("Jamendo API error: ${response.headers.error_message}"))
-            }
+            val response = musicApi.search(term = query)
+            val songs = response.results
+                .filter { !it.previewUrl.isNullOrEmpty() }
+                .map { it.toSong() }
+            Result.success(songs)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -23,12 +22,12 @@ class OnlineMusicRepository(private val jamendoApi: JamendoApi) {
 
     suspend fun getTrendingTracks(): Result<List<Song>> = withContext(Dispatchers.IO) {
         try {
-            val response = jamendoApi.getTrendingTracks()
-            if (response.headers.code == 0) {
-                Result.success(response.results.map { it.toSong() })
-            } else {
-                Result.failure(Exception("Jamendo API error: ${response.headers.error_message}"))
-            }
+            // Default top hits search
+            val response = musicApi.search(term = "hits", limit = 25)
+            val songs = response.results
+                .filter { !it.previewUrl.isNullOrEmpty() }
+                .map { it.toSong() }
+            Result.success(songs)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -36,14 +35,29 @@ class OnlineMusicRepository(private val jamendoApi: JamendoApi) {
 
     suspend fun getTracksByGenre(genre: String): Result<List<Song>> = withContext(Dispatchers.IO) {
         try {
-            val response = jamendoApi.getTracksByTags(fuzzytags = genre)
-            if (response.headers.code == 0) {
-                Result.success(response.results.map { it.toSong() })
-            } else {
-                Result.failure(Exception("Jamendo API error: ${response.headers.error_message}"))
-            }
+            val response = musicApi.search(term = genre, limit = 25)
+            val songs = response.results
+                .filter { !it.previewUrl.isNullOrEmpty() }
+                .map { it.toSong() }
+            Result.success(songs)
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    private fun MusicTrack.toSong(): Song {
+        val highResArt = artworkUrl100?.replace("100x100bb", "600x600bb") ?: artworkUrl100
+        return Song(
+            id = trackId ?: hashCode().toLong(),
+            title = trackName ?: "Unknown Track",
+            artist = artistName ?: "Unknown Artist",
+            album = collectionName ?: "Single",
+            albumId = collectionId ?: -1L,
+            duration = trackTimeMillis ?: 30000L,
+            path = previewUrl ?: "",
+            albumArtUri = highResArt,
+            dateAdded = System.currentTimeMillis() / 1000L,
+            isLocal = false
+        )
     }
 }

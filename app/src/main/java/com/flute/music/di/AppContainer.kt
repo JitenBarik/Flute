@@ -1,7 +1,7 @@
 package com.flute.music.di
 
 import android.app.Application
-import com.flute.music.data.api.JamendoApi
+import com.flute.music.data.api.MusicApi
 import com.flute.music.data.db.FluteDatabase
 import com.flute.music.data.repository.LikedSongsRepository
 import com.flute.music.data.repository.LocalMusicRepository
@@ -31,7 +31,7 @@ class AppContainer(private val application: Application) {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(JamendoApi.BASE_URL)
+            .baseUrl(MusicApi.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -41,8 +41,8 @@ class AppContainer(private val application: Application) {
         FluteDatabase.getInstance(application)
     }
 
-    val jamendoApi: JamendoApi by lazy {
-        retrofit.create(JamendoApi::class.java)
+    val musicApi: MusicApi by lazy {
+        retrofit.create(MusicApi::class.java)
     }
 
     val localMusicRepository: LocalMusicRepository by lazy {
@@ -50,7 +50,7 @@ class AppContainer(private val application: Application) {
     }
 
     val onlineMusicRepository: OnlineMusicRepository by lazy {
-        OnlineMusicRepository(jamendoApi)
+        OnlineMusicRepository(musicApi)
     }
 
     val playlistRepository: PlaylistRepository by lazy {
